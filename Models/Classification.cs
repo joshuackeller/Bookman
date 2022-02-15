@@ -1,10 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace Bookman.Models
 {
     public class Classification
     {
-        public Classification()
-        {
-        }
+        [Key]
+        [Required]
+        public int ClassificationId { get; set; }
+        public string ClassificationName { get; set; }
     }
 }

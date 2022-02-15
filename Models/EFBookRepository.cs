@@ -1,7 +1,18 @@
 ﻿using System;
+using System.Linq;
+
 namespace Bookman.Models
 {
-    public interface EFBookmanRepository
+    public class EFBookRepository : IBookRepository
     {
+        private BookContext context { get; set; }
+
+        public EFBookRepository (BookContext temp)
+        {
+            context = temp;
+        }
+
+        public IQueryable<Book> Books => context.Book;
     }
+
 }

@@ -1,5 +1,38 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @{
+    ViewData["Title"] = "Books";
 }
+
+@model BooksViewModel
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Book ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Publisher</th>
+        <th>ISBN</th>
+        <th>Classification</th>
+        <th>Category</th>
+        <th>Page Count</th>
+        <th>Price</th>
+    </tr>
+    @foreach (var x in Model.Books)
+     {
+        <tr>
+            <td>@x.BookId</td>
+            <td>@x.Title</td>
+            <td>@x.Author</td>
+            <td>@x.Publisher</td>
+            <td>@x.ISBN</td>
+            <td>@x.Classification.ClassificationName</td>
+            <td>@x.Category.CategoryName</td>
+            <td>@x.Pages</td>
+            <td>@x.Price</td>
+        </tr>
+     }
+</table>
+
+<div page-dynamic="@Model.PageInfo"  page-action="Books"></div>
+
+
