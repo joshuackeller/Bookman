@@ -43,6 +43,7 @@ namespace Bookman.Controllers.Infrastructure
 
                 tb.Attributes["href"] = uh.Action(PageAction, new { pageNum = i });
                 tb.Attributes["style"] = "margin-right: 10px; margin-left: 10px;";
+                tb.Attributes["class"] = "btn";
                 tb.InnerHtml.Append(i.ToString());
 
                 final.InnerHtml.AppendHtml(tb);
