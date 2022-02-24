@@ -1,0 +1,21 @@
+﻿
+@{
+}
+
+@model List<Category>
+
+    <div>
+        <a asp-controller="Home" asp-action="Books" asp-route-bookCategory="" asp-route-pageNum="1">Home</a>
+    </div>
+
+@foreach(Category b in Model)
+{
+<div>
+    <a asp-controller="Home" asp-action="Books" asp-route-bookCategory="@b.CategoryName" asp-route-pageNum="1"
+       class="btn @(ViewBag.SelectedType == b.CategoryName ? "btn-primary" : "btn-outline-secondary")"
+       >@b.CategoryName</a>
+</div>
+}
+
+
+

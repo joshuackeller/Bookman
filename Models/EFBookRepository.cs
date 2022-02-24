@@ -13,6 +13,11 @@ namespace Bookman.Models
         }
 
         public IQueryable<Book> Books => context.Book;
+
+        public object Select(Func<object, object> p)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

@@ -33,6 +33,12 @@ namespace Bookman
             });
 
             services.AddScoped<IBookRepository, EFBookRepository>();
+
+
+            services.AddRazorPages();
+
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +56,7 @@ namespace Bookman
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -58,8 +64,26 @@ namespace Bookman
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    "typepage",
+                    "{bookCategory}/Page{pageNum}",
+                   new { controller = "Home", action = "Books" });
+
+                endpoints.MapControllerRoute(
+                    name: "Paging",
+                    pattern: "Page{pageNum}",
+                    defaults: new { controller = "Home", action = "Books", pageNum = 1 });
+
+                endpoints.MapControllerRoute(
+                    "type",
+                    "{bookCategory}",
+                    new { controller = "Home", action = "Books", pageNum = 1 }
+                   );
+
+                
+
+                endpoints.MapDefaultControllerRoute();
+
+                endpoints.MapRazorPages();
             });
         }
     }

@@ -1,0 +1,28 @@
+﻿
+@{
+}
+
+@model Book
+
+
+<div style="padding: 10px; --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);">
+    <h4 style="text-align: center;">@Model.Title</h4>
+    <h5 style="text-align: center;">$@Model.Price</h5>
+    <p style="font-size: 9px;">Author: @Model.Author</p>
+    <p style="font-size: 9px;">Publisher: @Model.Publisher</p>
+    <p style="font-size: 9px;">ISBN: @Model.ISBN</p>
+    <p style="font-size: 9px;">@Model.Classification.ClassificationName</p>
+    <p style="font-size: 9px;">@Model.Category.CategoryName</p>
+    <p style="font-size: 9px;">Page Count: @Model.Pages</p>
+    <p style="font-size: 9px; text-align: center;">@Model.BookId</p>
+
+    <form method="post" asp-page="/Buy">
+        <input type="hidden" asp-for="@Model.BookId"/>
+        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()"/>
+        <span class="card-text">
+            <button type="submit" class="btn btn-success btn-sm">Buy</button>
+        </span>
+    </form>
+
+</div>
+

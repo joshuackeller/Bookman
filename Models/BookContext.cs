@@ -89,7 +89,7 @@ namespace Bookman.Models
                     ClassificationId = 1,
                     CategoryId = 1,
                     Pages = 1488,
-                    Price = 995,
+                    Price = 9.95,
                 },
                 new Book
                 {
@@ -209,7 +209,7 @@ namespace Bookman.Models
                     ClassificationId = 1,
                     CategoryId = 3,
                     Pages = 272,
-                    Price = 12.3,
+                    Price = 12.30,
                 },
                 new Book
                 {

@@ -26,13 +26,14 @@ namespace Bookman.Controllers
             return View();
         }
 
-        public IActionResult Books(int pageNum = 1)
+        public IActionResult Books(string bookCategory, int pageNum = 1)
         {
-            var length = 5;
+            var length = 6;
 
             var x = new BooksViewModel
             {
                 Books = repo.Books
+                .Where(x => x.Category.CategoryName == bookCategory || bookCategory == null)
                 .Include(x => x.Classification)
                 .Include(x => x.Category)
                 .Skip(length * (pageNum - 1))
@@ -40,7 +41,9 @@ namespace Bookman.Controllers
 
                 PageInfo = new PageInfo
                 {
-                    TotalNumBooks = repo.Books.Count(),
+                    TotalNumBooks = (bookCategory == null
+                                        ? repo.Books.Count()
+                                        : repo.Books.Where(x => x.Category.CategoryName == bookCategory).Count()),
                     BooksPerPage = length,
                     CurrentPage = pageNum
                 }

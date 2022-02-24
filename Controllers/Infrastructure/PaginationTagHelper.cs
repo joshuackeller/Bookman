@@ -28,8 +28,9 @@ namespace Bookman.Controllers.Infrastructure
         // Different than ViewContext
         public PageInfo PageDynamic { get; set; }
         public string PageAction { get; set; }
-
-
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected { get; set; }
+      
 
         public override void Process(TagHelperContext thc, TagHelperOutput tho)
         {
@@ -43,7 +44,11 @@ namespace Bookman.Controllers.Infrastructure
 
                 tb.Attributes["href"] = uh.Action(PageAction, new { pageNum = i });
                 tb.Attributes["style"] = "margin-right: 10px; margin-left: 10px;";
-                tb.Attributes["class"] = "btn";
+
+              
+                tb.AddCssClass(i == PageDynamic.CurrentPage? PageClassSelected : PageClassNormal);
+      
+
                 tb.InnerHtml.Append(i.ToString());
 
                 final.InnerHtml.AppendHtml(tb);
