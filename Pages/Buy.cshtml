@@ -3,7 +3,13 @@
 @{
 }
 
+<div style="display: flex; justify-content: space-between;">
 <h2>Your Cart</h2>
+<form method="post" asp-page-handler="RemoveAll">
+    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+    <button type="submit" style="color: red;" class="btn">Clear Cart</button>
+</form>
+</div>
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -23,6 +29,13 @@
             <td>@i.Quantity</td>
             <td>@i.Price</td>
             <td>@(i.Price * i.Quantity)</td>
+            <td>
+                <form method="post" asp-page-handler="Remove">
+                    <input type="hidden" name="bookId" value="@i.Book.BookId" />
+                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                    <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                </form>
+            </td>
         </tr>
             }
     </tbody>
@@ -38,6 +51,7 @@
     </tfoot>
 </table>
 
-<div>
-    <a class="btn btn-primary"  href="@Model.ReturnUrl">&larr;  Back to Books</a>
+<div style="display: flex; justify-content: space-between;">
+    <a class="btn"  href="@Model.ReturnUrl">&larr;  Back to Books</a>
+    <a asp-controller="Purchase" asp-action="Index" style="color: white;" class="btn btn-primary">Checkout</a>
 </div>

@@ -13,20 +13,18 @@ namespace Bookman.Pages
     {
 
         public IBookRepository repo { get; set; }
-
-        public BuyModel(IBookRepository temp)
-        {
-            repo = temp;
-        }
-
-
         public Cart cart { get; set; }
         public string ReturnUrl { get; set; }
 
+        public BuyModel(IBookRepository temp, Cart c)
+        {
+            repo = temp;
+            cart = c;
+        }
+
         public void OnGet(string returnUrl)
         {
-            ReturnUrl = returnUrl ?? "/Books";
-            cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
+            ReturnUrl = returnUrl ?? "/Page1";
         }
 
         public IActionResult OnPost(int bookId, string returnUrl)
@@ -34,12 +32,26 @@ namespace Bookman.Pages
             Book b = repo.Books.FirstOrDefault(x => x.BookId == bookId);
            
 
-            cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
             cart.AddItem(b, 1);
 
-            HttpContext.Session.SetJson("cart", cart);
 
             return RedirectToPage(new { ReturnUrl = returnUrl } );
+        }
+
+        public IActionResult OnPostRemove(int bookId, string returnUrl)
+        {
+            Book b = repo.Books.FirstOrDefault(x => x.BookId == bookId);
+
+            cart.RemoveItem(b);
+
+            return RedirectToPage(new { ReturnUrl = returnUrl });
+        }
+
+        public IActionResult OnPostRemoveAll(string returnUrl)
+        {
+            cart.RemoveAllItems();
+
+            return RedirectToPage(new { ReturnUrl = returnUrl });
         }
     }
 }

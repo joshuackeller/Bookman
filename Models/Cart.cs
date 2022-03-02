@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Bookman.Models
@@ -8,7 +9,7 @@ namespace Bookman.Models
     {
         public List<CartLineItem> Items { get; set; } = new List<CartLineItem>();
 
-        public void AddItem (Book book, int qty)
+        public virtual void AddItem (Book book, int qty)
         {
             CartLineItem line = Items
                 .Where(b => b.Book.BookId == book.BookId)
@@ -31,8 +32,17 @@ namespace Bookman.Models
             
         }
 
+        public virtual void RemoveItem (Book book)
+        {
+            Items.RemoveAll(x => x.Book.BookId == book.BookId);
+        }
 
-        public double CalculateTotal()
+        public virtual void RemoveAllItems()
+        {
+            Items.Clear();
+        }
+
+        public virtual double CalculateTotal()
         {
             double sum = Items.Sum(x => x.Quantity * x.Price);
 
@@ -44,6 +54,7 @@ namespace Bookman.Models
 
     public class CartLineItem
     {
+        [Key]
         public int LineID { get; set; }
         public Book Book { get; set; }
         public int Quantity { get; set; }

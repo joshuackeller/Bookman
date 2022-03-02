@@ -13,6 +13,7 @@ namespace Bookman.Models
         public DbSet<Book> Book { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<Classification> Classification { get; set; }
+        public DbSet<Purchase> Purchase { get; set; }
 
         protected override void OnModelCreating(ModelBuilder book)
         {
