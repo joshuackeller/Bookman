@@ -43,6 +43,8 @@ namespace Bookman
             services.AddDistributedMemoryCache();
             services.AddSession();
 
+            services.AddServerSideBlazor();
+
             services.AddScoped<Cart>(x => SessionCart.GetCart(x));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
@@ -92,6 +94,9 @@ namespace Bookman
                 endpoints.MapDefaultControllerRoute();
 
                 endpoints.MapRazorPages();
+
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/admin/{*catchall}", "/Admin/Index");
             });
         }
     }

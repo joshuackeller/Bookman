@@ -5,6 +5,8 @@ namespace Bookman.Models
 {
     public class BookContext : DbContext
     {
+       
+
         public BookContext(DbContextOptions<BookContext> options) : base(options)
         {
 
@@ -17,6 +19,16 @@ namespace Bookman.Models
 
         protected override void OnModelCreating(ModelBuilder book)
         {
+            //book.Entity<Book>(entity =>
+            //{
+            //    entity.HasKey(e => e.BookId);
+            //    entity.Property(e => e.BookId);
+            //    entity.Property(e => e.Title).IsRequired();
+            //});
+
+            //OnModelCreatingPartial(book);
+
+
             book.Entity<Classification>().HasData(
                 new Classification
                 {
@@ -277,5 +289,9 @@ namespace Bookman.Models
                 );
         }
 
+        private void OnModelCreatingPartial(object modelBuilder)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
