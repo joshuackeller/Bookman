@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,16 @@ namespace Bookman
                 options.UseSqlite(Configuration.GetConnectionString("BookmanConnection"));
             });
 
+            services.AddDbContext<IDDBContext>(options =>
+            {
+                options.UseSqlite(Configuration.GetConnectionString("IdentityConnection"));
+            }
+            );
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<IDDBContext>();
+
+
             services.AddScoped<IBookRepository, EFBookRepository>();
             services.AddScoped<IPurchaseRepository, EFPurchaseRepository>();
 
@@ -47,6 +58,8 @@ namespace Bookman
 
             services.AddScoped<Cart>(x => SessionCart.GetCart(x));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,9 +80,11 @@ namespace Bookman
             app.UseSession();
             app.UseRouting();
 
-         
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+          
 
             app.UseEndpoints(endpoints =>
             {
@@ -89,7 +104,7 @@ namespace Bookman
                     new { controller = "Home", action = "Books", pageNum = 1 }
                    );
 
-                
+
 
                 endpoints.MapDefaultControllerRoute();
 
@@ -98,6 +113,9 @@ namespace Bookman
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/admin/{*catchall}", "/Admin/Index");
             });
+
+
+            IdentitySeedData.EnsurePopulated(app);
         }
     }
 }
