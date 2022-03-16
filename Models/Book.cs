@@ -17,11 +17,10 @@ namespace Bookman.Models
         [Required]
         public string ISBN { get; set; }
 
-        [Required]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        [Required]
+  
         public int ClassificationId { get; set; }
         public Classification Classification { get; set; }
         [Required]

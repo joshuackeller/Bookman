@@ -48,14 +48,16 @@
         </InputNumber>
     </div>*@
 
-    <div class="form-group">
+    @*<div class="form-group">
         <label>Classification:</label>
-        <ValidationMessage For="@(() => b.Classification)"></ValidationMessage>
+        <ValidationMessage For="@(() => b.ClassificationId)"></ValidationMessage>
         <InputSelect class="form-control" @bind-Value="b.ClassificationId">
-            <option value="1">1</option>
-            <option value="2">2</option>
+          @foreach (var c in classifications)
+                    {
+                        <option value="@c.ClassificationId">@c.ClassificationName</option>
+                    }
         </InputSelect>
-    </div>
+    </div>*@
 
     <div class="form-group">
         <label>Pages:</label>
@@ -78,52 +80,54 @@
 
 
 
-        @code {
-            [Parameter]
-            public long Id { get; set; } = 0;
+@code {
 
-            public string ThemeColor => Id == 0 ? "primary" : "warning";
-            public string TitleText => Id == 0 ? "Create" : "Edit";
-            public string ButtonText => Id == 0 ? "Add Book" : "Save";
+    [Parameter]
+    public long Id { get; set; } = 0;
 
-
-            public Book b { get; set; } = new Book();
-
-            public IBookRepository repo => Service;
+    public string ThemeColor => Id == 0 ? "primary" : "warning";
+    public string TitleText => Id == 0 ? "Create" : "Edit";
+    public string ButtonText => Id == 0 ? "Add Book" : "Save";
 
 
+    public Book b { get; set; } = new Book();
+
+    public IBookRepository repo => Service;
+
+    public List<Classification> classifications;
 
 
+    protected override void OnParametersSet()
+    {
 
-            protected override void OnParametersSet()
-            {
+        classifications = repo.Books.Select(x => x.Classification).Distinct().ToList();
 
-                if (Id != 0)
-                {
-                    b = repo.Books.FirstOrDefault(x => x.BookId == Id);
-                }
-
-
-            }
-
-            public void SaveBook()
-            {
-                if (Id == 0)
-                {
-                    repo.CreateBook(b);
-                }
-                else
-                {
-                    repo.SaveBook(b);
-                }
-
-                NavManager.NavigateTo("/admin");
-            }
-
-            [Inject]
-            public NavigationManager NavManager { get; set; }
-
-
-
-
+        if (Id != 0)
+        {
+            b = repo.Books.FirstOrDefault(x => x.BookId == Id);
         }
+
+
+    }
+
+    public void SaveBook()
+    {
+        if (Id == 0)
+        {
+            repo.CreateBook(b);
+        }
+        else
+        {
+            repo.SaveBook(b);
+        }
+
+        NavManager.NavigateTo("/admin");
+    }
+
+    [Inject]
+    public NavigationManager NavManager { get; set; }
+
+
+
+
+}
