@@ -35,29 +35,41 @@
     </div>
 
     <div class="form-group">
+        <label>ISBN:</label>
+        <ValidationMessage For="@(() => b.ISBN)"></ValidationMessage>
+        <InputText class="form-control" @bind-Value="b.ISBN"></InputText>
+    </div>
+
+    <div class="form-group">
         <label>Publisher:</label>
         <ValidationMessage For="@(() => b.Publisher)"></ValidationMessage>
         <InputText class="form-control" @bind-Value="b.Publisher"></InputText>
     </div>
 
-    @*<div class="form-group">
-        <label>Category:</label>
-        <ValidationMessage For="@(() => b.Category)"></ValidationMessage>
-        <InputNumber class="form-control" @bind-Value="b.CategoryId">
-            <option value=""></option>
-        </InputNumber>
-    </div>*@
+    <div>
+        Professor Hilton and I worked on Category and Classification for a long time, but weren't able to find a perfect solution.
+        I built Category and Classification out as seperate models
+        so ideally they would be dropdown selects, but Edit Form doesn't allow that. You just have to enter a number
+        that corresponds with a valid Classification or Category. If you enter a number outside of the valid range,
+        the program will throw an error.
+    </div>
+    <br />
 
-    @*<div class="form-group">
-        <label>Classification:</label>
+    <div class="form-group">
+        <label>Classification: (see key below for classifications)</label>
         <ValidationMessage For="@(() => b.ClassificationId)"></ValidationMessage>
-        <InputSelect class="form-control" @bind-Value="b.ClassificationId">
-          @foreach (var c in classifications)
-                    {
-                        <option value="@c.ClassificationId">@c.ClassificationName</option>
-                    }
-        </InputSelect>
-    </div>*@
+        <InputNumber class="form-control" @bind-Value="b.ClassificationId">
+        </InputNumber>
+    </div>
+
+    <div class="form-group">
+        <label>Category: (see key below for categories)</label>
+        <ValidationMessage For="@(() => b.Category)"></ValidationMessage>
+
+        <InputNumber class="form-control" @bind-Value="b.CategoryId">
+
+        </InputNumber>
+    </div>
 
     <div class="form-group">
         <label>Pages:</label>
@@ -78,6 +90,25 @@
 </EditForm>
 
 
+<div>
+    <h4>Classifications</h4>
+    @foreach (var c in classifications)
+    {
+        <div>@c.ClassificationId: @c.ClassificationName</div>
+    }
+</div>
+
+<div>
+    <h4>Categories</h4>
+    @foreach (var c in categories)
+    {
+        <div>@c.CategoryId: @c.CategoryName</div>
+    }
+</div>
+
+
+
+
 
 
 @code {
@@ -96,11 +127,16 @@
 
     public List<Classification> classifications;
 
+    public List<Category> categories;
+
 
     protected override void OnParametersSet()
     {
 
         classifications = repo.Books.Select(x => x.Classification).Distinct().ToList();
+        categories = repo.Books.Select(x => x.Category).Distinct().ToList();
+
+
 
         if (Id != 0)
         {
